@@ -4,7 +4,7 @@ import { Location } from '@angular/common';
 import { ContactService } from '../contact.service';
 import { MatSnackBar } from '@angular/material';
 import { Contact } from '../contact';
-import { MatPaginator, MatTableDataSource } from '@angular/material';
+import { MatSort, MatTableDataSource } from '@angular/material';
 
 @Component({
   selector: 'app-contacts-search',
@@ -17,9 +17,9 @@ export class ContactsSearchComponent implements OnInit {
   page: number;
   query: string;
   contacts = new MatTableDataSource<Contact>();
+  displayedColumns = ['position', 'name', 'delete'];
 
-  @ViewChild(MatPaginator)
-  paginator: MatPaginator;
+  @ViewChild(MatSort) sort: MatSort;
 
   constructor(
     private route: ActivatedRoute,
@@ -33,10 +33,18 @@ export class ContactsSearchComponent implements OnInit {
 
   search(): void {
     this.contactService
-      .getContacts()
-      .subscribe(stream => {
-        this.contacts = new MatTableDataSource(stream);
-        this.contacts.paginator = this.paginator;
+      .getContacts(this.pageSize, this.page, this.query)
+      .subscribe(({ items, size }) => {
+        // this.contacts = new MatTableDataSource(stream);
+        this.contacts.sort = this.sort;
       });
+  }
+
+  delete(contact: Contact): void {
+    this.contacts.filterPredicate = (data: Contact, filter: string) => {
+      return data.name !== filter;
+    };
+    this.contacts.filter = contact.name;
+    this.contactService.deleteContact(contact.name).subscribe();
   }
 }

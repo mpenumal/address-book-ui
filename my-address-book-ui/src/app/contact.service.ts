@@ -3,12 +3,31 @@ import { Contact } from './contact';
 import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
 import { MessageService } from './message.service';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { catchError, map, tap } from 'rxjs/operators';
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
 };
+
+// create a decorator to move the logging and error handling
+function RunOperation(target: ContactService, property: string, descriptor: PropertyDescriptor) {
+  const originalMethod = descriptor.value;
+  descriptor.value = function () {
+    const args = [];
+    for (let i = 0; i < arguments.length; i++) {
+      args[i] = arguments[i];
+    }
+    const args_map = args.map((x) => JSON.stringify(x)).join();
+    const result = originalMethod.apply(this, args);
+    result.pipe(
+      tap(_ => this.log(`${target.addContact.name} Successful.`)),
+      catchError(this.handleError(target.addContact.name))
+    );
+    return result;
+  };
+  return descriptor;
+}
 
 @Injectable()
 export class ContactService {
@@ -23,46 +42,42 @@ export class ContactService {
     this.messageService.add('ContactService: ' + message);
   }
 
-  getContacts(pageSize: number = 100, page: number = 0, query: string = '*'): Observable<Contact[]> {
-    const url = `${this.contactsUrl}/?pageSize=${pageSize}&page=${page}&query=${query}`;
-    return this.http.get<Contact[]>(url)
-      .pipe(
-        tap(contacts => this.log(`Fetched Contacts`)),
-        catchError(this.handleError('getContacts', []))
-      );
+  @RunOperation
+  getContacts(pageSize: number, page: number, query: string) {
+    const url = `${this.contactsUrl}/`;
+    const params = new HttpParams()
+      .set('pageSize', `${pageSize}`)
+      .set('page', `${page}`)
+      .set('query', `${query}`);
+    return this.http
+      .get(url, { params: params }) as Observable<{ size: number, items: Contact[] }>;
   }
 
+  @RunOperation
   getContact(name: string): Observable<Contact> {
     const url = `${this.contactsUrl}/${name}`;
-    return this.http.get<Contact>(url).pipe(
-      tap(_ => this.log(`Fetched Contact name=${name}`)),
-      catchError(this.handleError<Contact>(`getContact name=${name}`))
-    );
+    return this.http.get<Contact>(url);
   }
 
-  addContact(contact: Contact): Observable<any> {
+  // return contact as it has the ID after create.
+  @RunOperation
+  addContact(contact: Contact): Observable<Contact> {
     const url = `${this.contactsUrl}/`;
-    return this.http.post(url, contact, httpOptions).pipe(
-      tap(_ => this.log(`Added contact name=${contact.name}`)),
-      catchError(this.handleError<any>('addContact'))
-    );
+    return this.http.post(url, contact, httpOptions) as Observable<Contact>;
   }
 
-  updateContact(contact: Contact): Observable<any> {
+  // does not return any.
+  @RunOperation
+  updateContact(contact: Contact): Observable<Contact> {
     const url = `${this.contactsUrl}/${contact.name}`;
-    return this.http.put(url, contact, httpOptions).pipe(
-      tap(_ => this.log(`Updated contact name=${contact.name}`)),
-      catchError(this.handleError<any>('updateContact'))
-    );
+    return this.http.put(url, contact, httpOptions) as Observable<Contact>;
   }
 
+  @RunOperation
   deleteContact(contact: Contact | string): Observable<Contact> {
     const name = typeof contact === 'string' ? contact : contact.name;
     const url = `${this.contactsUrl}/${name}`;
-    return this.http.delete<Contact>(url, httpOptions).pipe(
-      tap(_ => this.log(`deleted contact name=${name}`)),
-      catchError(this.handleError<Contact>('deleteContact'))
-    );
+    return this.http.delete<Contact>(url, httpOptions);
   }
 
   /**

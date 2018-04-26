@@ -1,11 +1,12 @@
-<h2 class="mat-h2">View top 100 contacts</h2>
 <div class="contacts-container mat-elevation-z8">
-  <mat-table #table [dataSource]='contacts'>
+  <mat-table #table [trackBy]="getId" [dataSource]='contacts'>
 
     <!-- Position Column -->
     <ng-container matColumnDef="position">
       <mat-header-cell *matHeaderCellDef> No. </mat-header-cell>
-      <mat-cell *matCellDef="let contact; let i=index;"> {{i + 1}} </mat-cell>
+      <mat-cell *matCellDef="let contact; let i=index;">
+        {{i + 1 + (paginator.pageSize * paginator.pageIndex)}}
+      </mat-cell>
     </ng-container>
 
     <!-- Name Column -->
@@ -30,6 +31,6 @@
     <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
   </mat-table>
 
-  <mat-paginator #paginator [pageSize]="10" [pageSizeOptions]="[5, 10, 20, 50, 100]" [showFirstLastButtons]="true">
+  <mat-paginator #paginator [pageSizeOptions]="[5, 10, 20, 50, 100]">
   </mat-paginator>
 </div>

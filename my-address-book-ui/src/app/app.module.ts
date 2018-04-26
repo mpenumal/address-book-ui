@@ -28,13 +28,18 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { ContactsSearchComponent } from './contacts-search/contacts-search.component';
+import { MatSortModule } from '@angular/material/sort';
+import { FlexLayoutModule } from '@angular/flex-layout';
+import { MatDialogModule } from '@angular/material/dialog';
+import { ContactListComponent } from './contact-list/contact-list.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     ContactsComponent,
     ContactDetailComponent,
-    ContactsSearchComponent
+    ContactsSearchComponent,
+    ContactListComponent
   ],
   imports: [
     BrowserModule,
@@ -54,7 +59,10 @@ import { ContactsSearchComponent } from './contacts-search/contacts-search.compo
     MatPaginatorModule,
     MatDividerModule,
     MatTooltipModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatSortModule,
+    FlexLayoutModule,
+    MatDialogModule
   ],
   providers: [
     ContactService,

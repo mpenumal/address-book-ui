@@ -1,13 +1,13 @@
+<h2 *ngIf='contact' class="mat-h2">{{ contact.name | uppercase }} Details</h2>
+<h2 *ngIf='!contact' class="mat-h2">Add new Contact</h2>
+
 <mat-card *ngIf='contact'>
-  <mat-card-header>
-    <mat-card-title>{{ contact.name | uppercase }} Details</mat-card-title>
-  </mat-card-header>
   <mat-card-content>
     <mat-form-field>
       <input matInput [(ngModel)]='contact.name' disabled='true' placeholder='name' />
     </mat-form-field>
     <mat-form-field>
-      <input matInput [(ngModel)]='contact.phone' placeholder='phone' />
+      <input matInput [(ngModel)]='contact.phone' type="number" placeholder='phone' />
     </mat-form-field>
     <mat-form-field>
       <input matInput [(ngModel)]='contact.city' placeholder='city' />
@@ -20,9 +20,6 @@
 </mat-card>
 
 <mat-card *ngIf='!contact'>
-  <mat-card-header>
-    <mat-card-title>Add new Contact</mat-card-title>
-  </mat-card-header>
   <mat-card-content>
     <mat-form-field>
       <input matInput [(ngModel)]='newContact.name' placeholder='name' />
@@ -35,7 +32,7 @@
     </mat-form-field>
   </mat-card-content>
   <mat-card-actions>
-    <button mat-raised-button color="primary" (click)='add()'>add</button>
+    <button mat-raised-button type="submit" color="primary" (click)='add()'>add</button>
     <button mat-raised-button color="warn" (click)='cancel()'>cancel</button>
   </mat-card-actions>
 </mat-card>

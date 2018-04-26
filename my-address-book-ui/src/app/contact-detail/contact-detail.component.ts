@@ -20,7 +20,7 @@ export class ContactDetailComponent implements OnInit {
   @Input()
   message: string;
 
-  newContact: Contact = { name: '', phone: 0, city: '' };
+  newContact: Partial<Contact> = {};
 
   constructor(
     private route: ActivatedRoute,
@@ -52,7 +52,7 @@ export class ContactDetailComponent implements OnInit {
   }
 
   add() {
-    this.contactService.addContact(this.newContact)
+    this.contactService.addContact(this.newContact as Contact)
       .subscribe(() => this.goBack());
     this.snackBar.open('Contact create successful!', '', {
       duration: 3000,

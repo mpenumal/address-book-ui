@@ -1,7 +1,6 @@
+<h2 class="mat-h2">Search for contact(s)</h2>
+<app-contact-list [pageSize]='pageSize' [page]='page' [query]='query'></app-contact-list>
 <mat-card>
-  <mat-card-header>
-    <mat-card-title>Search for contact(s)</mat-card-title>
-  </mat-card-header>
   <mat-card-content>
     <mat-form-field>
       <input matInput [(ngModel)]='pageSize' placeholder='PageSize' />

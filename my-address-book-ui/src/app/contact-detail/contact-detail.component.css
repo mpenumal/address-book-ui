@@ -1,0 +1,8 @@
+.contacts-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.contacts-container > * {
+  width: 100%;
+}

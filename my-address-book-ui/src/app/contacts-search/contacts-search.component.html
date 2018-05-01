@@ -1,18 +1,6 @@
-<h2 class="mat-h2">Search for contact(s)</h2>
-<app-contact-list [pageSize]='pageSize' [page]='page' [query]='query'></app-contact-list>
-<mat-card>
-  <mat-card-content>
-    <mat-form-field>
-      <input matInput [(ngModel)]='pageSize' placeholder='PageSize' />
-    </mat-form-field>
-    <mat-form-field>
-      <input matInput [(ngModel)]='page' placeholder='PageNumber' />
-    </mat-form-field>
-    <mat-form-field>
-      <input matInput [(ngModel)]='query' placeholder='Query' />
-    </mat-form-field>
-  </mat-card-content>
-  <mat-card-actions>
-    <button mat-raised-button color="primary" (click)='search()'>search</button>
-  </mat-card-actions>
-</mat-card>
+<app-contact-list [query]="query">
+</app-contact-list>
+<div class="search">
+  <input type="search" matInput [(ngModel)]="query" placeholder="Query" />
+  <mat-icon class="material-icons" routerLink="/contacts/new">search</mat-icon>
+</div>

@@ -4,7 +4,6 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
-import { ContactsComponent } from './contacts/contacts.component';
 import { ContactDetailComponent } from './contact-detail/contact-detail.component';
 import { ContactService } from './contact.service';
 import { MessageService } from './message.service';
@@ -32,11 +31,12 @@ import { MatSortModule } from '@angular/material/sort';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { MatDialogModule } from '@angular/material/dialog';
 import { ContactListComponent } from './contact-list/contact-list.component';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatMenuModule } from '@angular/material/menu';
 
 @NgModule({
   declarations: [
     AppComponent,
-    ContactsComponent,
     ContactDetailComponent,
     ContactsSearchComponent,
     ContactListComponent
@@ -62,7 +62,9 @@ import { ContactListComponent } from './contact-list/contact-list.component';
     MatSnackBarModule,
     MatSortModule,
     FlexLayoutModule,
-    MatDialogModule
+    MatDialogModule,
+    MatToolbarModule,
+    MatMenuModule
   ],
   providers: [
     ContactService,

@@ -1,0 +1,21 @@
+mat-cell {
+  overflow: visible;
+}
+
+.contacts-container {
+  margin-left: 10%;
+  margin-right: 10%;
+  width: 80%;
+}
+
+button.add {
+  float: right;
+}
+
+mat-header-row {
+  background-color: rgb(255, 152, 67);
+}
+
+mat-header-cell {
+  color: white;
+}

@@ -1,10 +1,12 @@
-<h2 *ngIf='contact' class="mat-h2">{{ contact.name | uppercase }} Details</h2>
-<h2 *ngIf='!contact' class="mat-h2">Add new Contact</h2>
-
-<mat-card *ngIf='contact'>
+<mat-toolbar class="mat-elevation-z8" color="accent">
+  <mat-toolbar-row>
+    <span>Contact</span>
+  </mat-toolbar-row>
+</mat-toolbar>
+<mat-card *ngIf="contact" class="mat-elevation-z8">
   <mat-card-content>
     <mat-form-field>
-      <input matInput [(ngModel)]='contact.name' disabled='true' placeholder='name' />
+      <input matInput [(ngModel)]='contact.name' disabled="disabled" placeholder='name' />
     </mat-form-field>
     <mat-form-field>
       <input matInput [(ngModel)]='contact.phone' type="number" placeholder='phone' />
@@ -14,18 +16,18 @@
     </mat-form-field>
   </mat-card-content>
   <mat-card-actions>
-    <button mat-raised-button color="primary" (click)='save()'>update</button>
-    <button mat-raised-button color="warn" (click)='cancel()'>cancel</button>
+    <button mat-raised-button type="submit" color="primary" (click)='save()'>save</button>
+    <button mat-raised-button color="warn" (click)='onNoClick()'>cancel</button>
   </mat-card-actions>
 </mat-card>
 
-<mat-card *ngIf='!contact'>
+<mat-card *ngIf="!contact" class="mat-elevation-z8">
   <mat-card-content>
     <mat-form-field>
       <input matInput [(ngModel)]='newContact.name' placeholder='name' />
     </mat-form-field>
     <mat-form-field>
-      <input matInput [(ngModel)]='newContact.phone' placeholder='phone' />
+      <input matInput [(ngModel)]='newContact.phone' type="number" placeholder='phone' />
     </mat-form-field>
     <mat-form-field>
       <input matInput [(ngModel)]='newContact.city' placeholder='city' />
@@ -33,6 +35,6 @@
   </mat-card-content>
   <mat-card-actions>
     <button mat-raised-button type="submit" color="primary" (click)='add()'>add</button>
-    <button mat-raised-button color="warn" (click)='cancel()'>cancel</button>
+    <button mat-raised-button color="warn" (click)='onNoClick()'>cancel</button>
   </mat-card-actions>
 </mat-card>

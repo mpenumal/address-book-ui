@@ -1,5 +1,13 @@
+<div class="contacts-container">
+  <mat-form-field>
+    <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+  </mat-form-field>
+  <button mat-fab color="primary" class="add" (click)="openAddDialog()">
+    <i class="material-icons">add</i>
+  </button>
+</div>
 <div class="contacts-container mat-elevation-z8">
-  <mat-table #table [trackBy]="getId" [dataSource]='contacts'>
+  <mat-table #table [trackBy]="getId" [dataSource]="contacts" matSort>
 
     <!-- Position Column -->
     <ng-container matColumnDef="position">
@@ -11,17 +19,30 @@
 
     <!-- Name Column -->
     <ng-container matColumnDef="name">
-      <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
-      <mat-cell *matCellDef="let contact" routerLink='/contacts/{{contact.name}}'>
-        {{contact.name}}
-      </mat-cell>
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Name </mat-header-cell>
+      <mat-cell *matCellDef="let contact">{{contact.name}}</mat-cell>
     </ng-container>
 
-    <!-- Delete Column -->
-    <ng-container matColumnDef="delete">
-      <mat-header-cell *matHeaderCellDef> Delete </mat-header-cell>
+    <!-- Phone Column -->
+    <ng-container matColumnDef="phone">
+      <mat-header-cell *matHeaderCellDef> Phone </mat-header-cell>
+      <mat-cell *matCellDef="let contact">{{contact.phone}}</mat-cell>
+    </ng-container>
+
+    <!-- City Column -->
+    <ng-container matColumnDef="city">
+      <mat-header-cell *matHeaderCellDef> City </mat-header-cell>
+      <mat-cell *matCellDef="let contact">{{contact.city}}</mat-cell>
+    </ng-container>
+
+    <!-- Action Column -->
+    <ng-container matColumnDef="action">
+      <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
       <mat-cell *matCellDef="let contact">
-        <button mat-button (click)='delete(contact)'>
+        <button mat-button (click)="openEditDialog(contact)">
+          <i class="material-icons">edit</i>
+        </button>
+        <button mat-button (click)="delete(contact)">
           <i class="material-icons">delete</i>
         </button>
       </mat-cell>
@@ -31,6 +52,6 @@
     <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
   </mat-table>
 
-  <mat-paginator #paginator [pageSizeOptions]="[5, 10, 20, 50, 100]">
+  <mat-paginator #paginator [pageSizeOptions]="[10, 20, 50]">
   </mat-paginator>
 </div>

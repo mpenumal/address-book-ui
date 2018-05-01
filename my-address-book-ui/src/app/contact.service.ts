@@ -43,7 +43,7 @@ export class ContactService {
   }
 
   @RunOperation
-  getContacts(pageSize: number, page: number, query: string) {
+  getContacts(pageSize: number = 10, page: number = 0, query: string) {
     const url = `${this.contactsUrl}/`;
     const params = new HttpParams()
       .set('pageSize', `${pageSize}`)

@@ -1,16 +1,21 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Inject } from '@angular/core';
 import { Contact } from '../contact';
 
 import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 
 import { ContactService } from '../contact.service';
-import { MatSnackBar } from '@angular/material';
+import {
+  MatSnackBar,
+  MatDialog,
+  MatDialogRef,
+  MAT_DIALOG_DATA
+} from '@angular/material';
 
 @Component({
   selector: 'app-contact-detail',
   templateUrl: './contact-detail.component.html',
-  styleUrls: ['./contact-detail.component.css']
+  styleUrls: ['./contact-detail.component.scss']
 })
 export class ContactDetailComponent implements OnInit {
 
@@ -26,26 +31,26 @@ export class ContactDetailComponent implements OnInit {
     private route: ActivatedRoute,
     private contactService: ContactService,
     private location: Location,
-    public snackBar: MatSnackBar
+    public snackBar: MatSnackBar,
+    public dialogRef: MatDialogRef<ContactDetailComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any
   ) { }
 
   ngOnInit(): void {
     this.getContact();
+
   }
 
   getContact(): void {
-    const name = this.route.snapshot.paramMap.get('name');
-    this.contactService.getContact(name)
-      .subscribe(x => this.contact = x);
-  }
-
-  goBack(): void {
-    this.location.back();
+    // const contact = this.route.snapshot.paramMap.get('contact');
+    if (this.data && this.data.editContact) {
+      this.contact = this.data.editContact;
+    }
   }
 
   save(): void {
     this.contactService.updateContact(this.contact)
-      .subscribe(() => this.goBack());
+      .subscribe(() => this.onNoClick());
     this.snackBar.open('Contact update successful!', '', {
       duration: 3000,
     });
@@ -53,16 +58,13 @@ export class ContactDetailComponent implements OnInit {
 
   add() {
     this.contactService.addContact(this.newContact as Contact)
-      .subscribe(() => this.goBack());
+      .subscribe(() => this.onNoClick());
     this.snackBar.open('Contact create successful!', '', {
       duration: 3000,
     });
   }
 
-  cancel(): void {
-    this.goBack();
-    this.snackBar.open('Nothing changed :(', '', {
-      duration: 3000,
-    });
+  onNoClick(): void {
+    this.dialogRef.close();
   }
 }

@@ -9,17 +9,13 @@ import { MatSort, MatTableDataSource } from '@angular/material';
 @Component({
   selector: 'app-contacts-search',
   templateUrl: './contacts-search.component.html',
-  styleUrls: ['./contacts-search.component.css']
+  styleUrls: ['./contacts-search.component.scss']
 })
 export class ContactsSearchComponent implements OnInit {
-
   pageSize: number;
   page: number;
-  query: string;
-  contacts = new MatTableDataSource<Contact>();
+  query = '*';
   displayedColumns = ['position', 'name', 'delete'];
-
-  @ViewChild(MatSort) sort: MatSort;
 
   constructor(
     private route: ActivatedRoute,
@@ -29,22 +25,5 @@ export class ContactsSearchComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-  }
-
-  search(): void {
-    this.contactService
-      .getContacts(this.pageSize, this.page, this.query)
-      .subscribe(({ items, size }) => {
-        // this.contacts = new MatTableDataSource(stream);
-        this.contacts.sort = this.sort;
-      });
-  }
-
-  delete(contact: Contact): void {
-    this.contacts.filterPredicate = (data: Contact, filter: string) => {
-      return data.name !== filter;
-    };
-    this.contacts.filter = contact.name;
-    this.contactService.deleteContact(contact.name).subscribe();
   }
 }
